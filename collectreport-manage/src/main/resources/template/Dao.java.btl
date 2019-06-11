@@ -1,0 +1,12 @@
+package ${package}.modules.${module}.dao;
+
+import org.apache.ibatis.annotations.Mapper;
+import ${package}.modules.${module}.entity.po.${className}PO;
+/**
+*${comment}
+*@author:${author}
+*/
+@Mapper
+public interface ${className}Dao extends BaseDao<${className}PO>{
+
+}

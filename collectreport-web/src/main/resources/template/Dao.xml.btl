@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${package}.modules.${module}.dao.${className}Dao">
+
+<select id="listForPage" resultType="${package}.modules.${module}.entity.po.${className}PO">
+    /*根据beetl官方文档说明，安全输出是任何一个模板引擎必须重视的问题，否则，将极大困扰模板开发者。
+            Beetl中，如果要输出的模板变量为null，则beetl将不做输出，
+            这点不同于JSP，JSP输出null，也不同于Freemarker，如果没有用!,它会报错.
+            模板中还有俩种情况会导致模板输出异常
+
+                有时候模板变量并不存在（譬如子模板里）
+                模板变量为null，但输出的是此变量的一个属性，如
+
+            针对前俩种情况，可以在变量引用后加上！以提醒beetl这是一个安全输出的变量。 */
+    select
+    <%for(column in columns!) {%>
+    '${column.columnName}'<% if(!columnLP.last) { %>, <%}%>
+    <%}%>
+    FROM
+    ${tableName}
+    order by
+        ${pk.columnName} DESC
+</select>
+
+<insert id = "save" >
+ insert into ${tableName} (
+ <% for(column in columns!) { %>
+ <% if(column.columnName != pk.columnName || pk.extra != 'auto_increment'){%>
+    '${column.columnName}' <% if(!columnLP.last){ %>,<%}%>
+ <% } %>
+ <% } %>
+ )
+ values (
+ <% for(column in columns!) { %>
+ <% if(column.columnName != pk.columnName || pk.extra != 'auto_increment') { %>
+    #{${column.fieldName}} <% if(!columnLP.last) { %>, <% } %>
+  <% } %>
+  <% } %>
+  </insert>
+
+  <select id="getObjectById" resultType="${package}.modules.${module}.entity.${className}PO">
+   SELECT
+   <% for(column in columns!) {%>
+    '${column.columnName}' <% if(!columnLP.last){ %>,<%}%>
+    <% } %>
+    form
+    ${tableName}
+    where
+    ${pk.columnName} = #{${pk.fieldName}}
+  </select>
+
+  <update id = "update">
+    update ${tableName}
+    <set>
+        <% for(column in columns!) { %>
+        <% if(column.columnName != pk.columnName){%>
+            <if test="${column.fieldName} !=null">
+            '${column.columnName}' = #{${column.fieldName}} <% if(!columnLP.last){%>,<%}%></if>
+            <% } %>
+            <% } %>
+            where
+            ${pk.columnName} = #{${pk.fieldName}}
+    </set>
+  </update>
+
+  <delete id="batchDelete">
+        delete from
+        ${tableName}
+        where
+        ${pk.columnName} in
+        <foreach item="id"  collection="array" open="(" separator="," close=")">
+        #{id}
+        </foreach>
+   </delete>
+
+  </mapper>
+
+

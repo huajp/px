@@ -1,0 +1,37 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 100
+    min-spare-threads: 10
+  servlet:
+    context-path: /clrweb
+  port: 8081
+
+global:
+  upload-location: /clr/ #文件上传目录
+  upload-mapping: /upload/ #文件上传目录访问路径
+  kaptcha-enable: true #是否开启验证码，true为开启，false为关闭
+
+#应用名称
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+    multipart:
+    max-file-size: 100MB
+    max-request-size: 100MB
+    enabled: true
+  mvc:
+    static-path-pattern: /static/**
+  dubbo:
+    application:
+      name: collectreport-web
+#注册中心地址
+    registry:
+      address: zookeeper://192.168.11.128:2181
+      protocol:
+        name: dubbo
+        port: 20880
+#调用dubbo组建扫描的项目路径
+    scan: com.clr.modules.sysmanage.service.impl

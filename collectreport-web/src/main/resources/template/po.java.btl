@@ -1,0 +1,24 @@
+package ${package}.modules.${module}.entity;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.io.Serializable;
+/**
+   *@author ${author}
+*/
+@Setter
+@Getter
+@ToString
+public class ${className}PO implements Serializable{
+    private static final long serialVersionUID = 1L;
+
+    <%for(column in columns!) { %>
+    /**
+       *${column.columnComment}
+     */
+     private ${column.fieldType} ${column.fieldName};
+
+    <% } %>
+}

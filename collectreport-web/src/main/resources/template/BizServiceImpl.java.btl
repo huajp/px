@@ -1,0 +1,44 @@
+package ${package}.modules.${module}.service.biz.impl;
+
+import ${package}.modules.${module}.entity.bo.${className}PO;
+import ${package}.modules.${module}.entity.bo.${className}BO;
+import ${package}.common.utils.Page;
+import ${package}.common.entity.R;
+import ${package}.common.utils.CommonUtils;
+import ${package}.modules.${module}.dao.UserDao;
+import ${package}.modules.${module}.service.biz.AbstractCommonBizService;
+import ${package}.modules.${module}.service.biz.I${className}BizService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
+
+public class ${className}BizServiceImpl implements I${className}Service{
+    @Autowired
+    private ${className}Dao ${objName}Dao;
+
+    @Override
+    public Page<${className}BO> list${className}ByPage(Map<String,Object> params){
+        Query query = new Query(params);
+        Page<${className}PO> page = new Page<>(query);
+        ${objName}Dao.list${className}ByPage(page,query);
+        return page;
+    }
+
+    @Override
+    public R save${className}(${className}PO ${objName}){
+        int count = ${className}Dao.save(${objName});
+        return CommonUtils.msg(count);
+    }
+    @Override
+    public ${className}BO get${className}ById(Long id){
+
+    }
+    @Override
+    public R update${className}(${className}PO ${objName}){
+    }
+    @Override
+    public R batchRemove(Long[] id){
+    }
+
+}

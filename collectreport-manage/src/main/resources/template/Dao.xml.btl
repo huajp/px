@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${package}.modules.${module}.dao.${className}Dao">
+
+<select id="listForPage" resultType="${package}.modules.${module}.entity.po.${className}PO">
+    select
+    <%for(column in columns!) {%>
+    '${column.columnName}'<% if(!columnLP.last) { %>, <%}%>
+    <%}%>
+    FROM
+    ${tableName}
+    order by
+        ${pk.columnName} DESC
+</select>
+
+<insert id = "save" >
+ insert into ${tableName} (
+ <% for(column in columns!) { %>
+ <% if(column.columnName != pk.columnName || pk.extra != 'auto_increment'){%>
+    '${column.columnName}' <% if(!columnLP.last){ %>,<%}%>
+ <% } %>
+ <% } %>
+ )
+ values (
+ <% for(column in columns!) { %>
+ <% if(column.columnName != pk.columnName || pk.extra != 'auto_increment') { %>
+    #{${column.fieldName}} <% if(!columnLP.last) { %>, <% } %>
+  <% } %>
+  <% } %>
+  </insert>
+
+  <select id="getObjectById" resultType="${package}.modules.${module}.entity.${className}PO">
+   SELECT
+   <% for(column in columns!) {%>
+    '${column.columnName}' <% if(!columnLP.last){ %>,<%}%>
+    <% } %>
+    form
+    ${tableName}
+    where
+    ${pk.columnName} = #{${pk.fieldName}}
+  </select>
+
+  <update id = "update">
+    update ${tableName}
+    <set>
+        <% for(column in columns!) { %>
+        <% if(column.columnName != pk.columnName){%>
+            <if test="${column.fieldName} !=null">
+            '${column.columnName}' = #{${column.fieldName}} <% if(!columnLP.last){%>,<%}%></if>
+            <% } %>
+            <% } %>
+            </set>
+            where
+            ${pk.columnName} = #{${pk.fieldName}}
+            </update>
+
+
+
+    </set>
+
+  </update>
+
+  <delete id="batchDelete">
+  Delete from
+  ${tableName}
+  where
+   ${pk.columnName} in
+   <foreach item="id"  collection="array" open="(" separator="," close=")">
+    #{id}
+   <foreach>
+   <delete>
+
+  </mapper>
+
+

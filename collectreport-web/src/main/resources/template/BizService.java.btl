@@ -1,0 +1,21 @@
+package ${package}.modules.${module}.service.biz;
+
+import ${package}.modules.${module}.entity.bo.${className}PO;
+import ${package}.common.utils.Page;
+import ${package}.common.entity.R;
+
+import java.util.Map;
+
+public interface I${className}BizService{
+
+    public Page<${className}BO> list${className}ByPage(Map<String,Object> params);
+
+    public R save${className}(${className}PO ${objName});
+
+    public ${className}BO get${className}ById(Long id);
+
+    public R update${className}(${className}PO ${objName});
+
+    public R batchRemove(Long[] id);
+
+}
